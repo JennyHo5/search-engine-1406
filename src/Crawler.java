@@ -1,9 +1,8 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Crawler {
-    Page curPage = new Page(); //an object of current page
 
     //find the title of the current page
     public String findTitle(String html) {
@@ -14,7 +13,6 @@ public class Crawler {
         String title = titleTag.substring(startTitleIndex);
         return title;
     }
-
 
     //find all words on the current page
     public HashMap<String, Integer> findWords(String html) {
@@ -38,27 +36,21 @@ public class Crawler {
         return allWords;
     }
 
-
     //find all links on the current page
-    public HashMap<String, Integer> findLinks(String html, String seed) {
-        HashMap<String, Integer> allLinks = new HashMap<>();
+    public HashSet<String> findURLs(String html, String seed) {
+        HashSet<String> allURLs = new HashSet<>();
         while (html.contains("<a href=\"")) {
             int startAIndex = html.indexOf("<a href=\"");
             int endAIndex = html.indexOf("</a>");
             String a = html.substring(startAIndex + 9, endAIndex);
             int endQuotationIndex = a.indexOf("\">");
-            String url = a.substring(0, endQuotationIndex);
-            Link link = new Link(seed, url);
-            String fullLink = link.getFullURL();
-            //add the fullLink to the HashMap
-            if (!allLinks.containsKey(fullLink)) {
-                allLinks.put(fullLink, 0);
-            }
-            allLinks.put(fullLink, allLinks.get(fullLink) + 1);
-
+            String URL = a.substring(0, endQuotationIndex);
+            String absURL = LinkConverter.convert(URL, seed);
+            //add the fullLink to the HashSet
+            allURLs.add(absURL);
             html = html.substring(0, startAIndex) + html.substring(endAIndex + 5);
         }
-        return allLinks;
+        return allURLs;
     }
 
 

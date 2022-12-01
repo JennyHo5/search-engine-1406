@@ -1,33 +1,41 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Page {
-    private Link URL;
+    private String URL;
+    private String html;
     private String title;
     private String fullURL; //full URL of the page
     private HashMap<String, Integer> allWords; //all words on the page
-    private HashMap<String, Integer> allLinks; //all links on the page
+    private HashSet<String> allURLs; //all URLs on the page
 
     //constructors
     public Page() {
-        URL = new Link();
+        URL = "";
+        html = "";
         title = "";
         fullURL = "";
         allWords = new HashMap<>();
-        allLinks = new HashMap<>();
+        allURLs = new HashSet<>();
     }
 
-    public Page(Link iURL, String iTitle, String iFullURL, HashMap<String, Integer> iAllWords, HashMap<String,
-            Integer> iAllLinks) {
+    public Page(String iURL, String iTitle, String iFullURL, HashMap<String, Integer> iAllWords,
+                HashSet<String> iAllURLs) {
         URL = iURL;
         title = iTitle;
         fullURL = iFullURL;
         allWords = iAllWords;
-        allLinks = iAllLinks;
+        allURLs = iAllURLs;
     }
 
     //get methods
-    public Link getURL() {
+    public String getURL() {
         return URL;
+    }
+
+    public String getHtml() {
+        return html;
     }
 
     public String getTitle() {
@@ -42,13 +50,17 @@ public class Page {
         return allWords;
     }
 
-    public HashMap<String, Integer> getAllLinks() {
-        return allLinks;
+    public HashSet<String> getAllURLs() {
+        return allURLs;
     }
 
     //set methods
-    public void setURL(Link URL) {
+    public void setURL(String URL) {
         this.URL = URL;
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
     }
 
     public void setTitle(String title) {
@@ -63,7 +75,7 @@ public class Page {
         this.allWords = allWords;
     }
 
-    public void setAllLinks(HashMap<String, Integer> allLinks) {
-        this.allLinks = allLinks;
+    public void setAllURLs(HashSet<String> allURLs) {
+        this.allURLs = allURLs;
     }
 }
