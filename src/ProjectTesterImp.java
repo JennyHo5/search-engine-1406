@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 public class ProjectTesterImp implements ProjectTester{
     //Reset any existing data
@@ -35,16 +36,31 @@ public class ProjectTesterImp implements ProjectTester{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        FileInputAndOutput.readCrawledURLs();
-        FileInputAndOutput.readAllWords();
-        FileInputAndOutput.readCrawledWorlds();
+        FileInputAndOutputKit.readCrawledURLs();
+        FileInputAndOutputKit.readAllWords();
+        FileInputAndOutputKit.readCrawledWorlds();
     }
 
     @Override
-    public List<String> getOutgoingLinks(String url){
+    public List<String> getOutgoingLinks(String url) {
         List<String> outgoingLinks = new ArrayList<>();
-        HashSet<String> crawledURLs = FileInputAndOutput.readCrawledURLs();
-        return null;
+        Page curPage = new Page(url);
+        HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLs();
+        //if the URL was not found during the crawling process then return Null
+        if (!crawledURLs.contains(url))
+            return null;
+
+        //read crawledPages
+        HashSet<Page> crawledPages = FileInputAndOutputKit.readCrawledPages();
+        for (Page p : crawledPages) {
+            if (Objects.equals(p.getURL(), url)) {
+                curPage = p;
+                break;
+            }
+        }
+
+        outgoingLinks = curPage.getAllURLs();
+        return outgoingLinks;
     }
 
     @Override

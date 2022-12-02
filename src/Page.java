@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -7,27 +8,19 @@ public class Page implements Serializable {
     private String html;
     private String title;
     private HashMap<String, Integer> words; //all words on the page
-    private HashSet<String> allURLs; //all URLs on the page
+    private ArrayList<String> allURLs; //all URLs on the page
 
     //constructors
-    public Page() {
-        URL = "";
-        html = "";
-        title = "";
-        words = new HashMap<>();
-        allURLs = new HashSet<>();
-    }
-
     public Page(String iURL) {
         URL = iURL;
         html = "";
         title = "";
         words = new HashMap<>();
-        allURLs = new HashSet<>();
+        allURLs = new ArrayList<>();
     }
 
     public Page(String iURL, String iTitle, HashMap<String, Integer> iWords,
-                HashSet<String> iAllURLs) {
+                ArrayList<String> iAllURLs) {
         URL = iURL;
         title = iTitle;
         words = iWords;
@@ -52,7 +45,7 @@ public class Page implements Serializable {
         return words;
     }
 
-    public HashSet<String> getAllURLs() {
+    public ArrayList<String> getAllURLs() {
         return allURLs;
     }
 
@@ -73,7 +66,7 @@ public class Page implements Serializable {
         this.words = words;
     }
 
-    public void setAllURLs(HashSet<String> allURLs) {
+    public void setAllURLs(ArrayList<String> allURLs) {
         this.allURLs = allURLs;
     }
 
