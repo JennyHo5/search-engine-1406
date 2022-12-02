@@ -6,7 +6,6 @@ public class Page {
     private String URL;
     private String html;
     private String title;
-    private String fullURL; //full URL of the page
     private HashMap<String, Integer> allWords; //all words on the page
     private HashSet<String> allURLs; //all URLs on the page
 
@@ -15,16 +14,22 @@ public class Page {
         URL = "";
         html = "";
         title = "";
-        fullURL = "";
         allWords = new HashMap<>();
         allURLs = new HashSet<>();
     }
 
-    public Page(String iURL, String iTitle, String iFullURL, HashMap<String, Integer> iAllWords,
+    public Page(String iURL) {
+        URL = iURL;
+        html = "";
+        title = "";
+        allWords = new HashMap<>();
+        allURLs = new HashSet<>();
+    }
+
+    public Page(String iURL, String iTitle, HashMap<String, Integer> iAllWords,
                 HashSet<String> iAllURLs) {
         URL = iURL;
         title = iTitle;
-        fullURL = iFullURL;
         allWords = iAllWords;
         allURLs = iAllURLs;
     }
@@ -42,9 +47,6 @@ public class Page {
         return title;
     }
 
-    public String getFullURL() {
-        return fullURL;
-    }
 
     public HashMap<String, Integer> getAllWords() {
         return allWords;
@@ -67,15 +69,16 @@ public class Page {
         this.title = title;
     }
 
-    public void setFullURL(String fullURL) {
-        this.fullURL = fullURL;
-    }
-
     public void setAllWords(HashMap<String, Integer> allWords) {
         this.allWords = allWords;
     }
 
     public void setAllURLs(HashSet<String> allURLs) {
         this.allURLs = allURLs;
+    }
+
+    public String toString() {
+        String result = URL + html + title + allWords + allURLs;
+        return result;
     }
 }

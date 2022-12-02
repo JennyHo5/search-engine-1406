@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.List;
 
 public interface ProjectTester {
@@ -14,7 +15,7 @@ public interface ProjectTester {
     It should not stop until it has visited all reachable pages.
     All data required for later search queries should be saved in files once this completes.
      */
-    void crawl(String seedURL);
+    void crawl(String seedURL) throws IOException;
 
     /*
     Returns a list of the outgoing links of the page with the given URL.
