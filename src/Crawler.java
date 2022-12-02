@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class Crawler {
     Page seedPage;
@@ -20,7 +21,7 @@ public class Crawler {
         crawledPages = new HashSet<>();
     }
 
-    public void doTheCrawl() throws IOException {
+    public void doTheCrawl(){
         // repeat until the queue is empty
         while (queueURLs.size() != 0) {
             //get and remove the next Page from queueList
@@ -32,8 +33,12 @@ public class Crawler {
                 continue;
 
             //read the current page (using webdev module)
-
-            String curHtml = WebRequester.readURL(curURL);
+            String curHtml = null;
+            try {
+                curHtml = WebRequester.readURL(curURL);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             String curTitle = findTitle(curHtml);
             HashMap<String, Integer> curWords = findWords(curHtml);
             HashSet<String> curURLs = findURLs(curHtml, seedURL);
@@ -48,29 +53,58 @@ public class Crawler {
         }
     }
 
-    public void saveData() throws IOException {
-        //save crawled Pages
+    //save crawled Pages
+    public void saveCrawledPages() throws IOException {
         ObjectOutputStream writer1;
         writer1 = new ObjectOutputStream(new FileOutputStream("crawled-pages.dat"));
         writer1.writeObject(crawledPages);
         writer1.close();
+    }
 
-        //save crawled URls
+    //save crawled URls
+    public void saveCrawledURLs() throws IOException {
         ObjectOutputStream writer2;
         writer2 = new ObjectOutputStream(new FileOutputStream("crawled-URLs.dat"));
         writer2.writeObject(alreadyCrawledURLs);
         writer2.close();
     }
 
-    public void readData() throws IOException, ClassNotFoundException {
-        ObjectInputStream reader1;
-        reader1 = new ObjectInputStream(new FileInputStream("crawled-pages.dat"));
-        HashSet<Page> crawledPagesList = new HashSet<>();
-        crawledPagesList = (HashSet<Page>) reader1.readObject();
-        for (Page p : crawledPagesList) {
-            System.out.println(p);
+    //save all words in the crawled pages (including duplicates)
+    public void saveAllWords() throws IOException {
+        ObjectOutputStream writer3;
+        writer3 = new ObjectOutputStream(new FileOutputStream("all-words.dat"));
+        HashMap<String, Integer> allWords = new HashMap<>();
+        for (Page p : crawledPages) {
+            HashMap<String, Integer> wordsOnThePage = p.getAllWords();
+            for (Map.Entry<String, Integer> entry : wordsOnThePage.entrySet()) {
+                String word = entry.getKey();
+                Integer counts = entry.getValue();
+                if (!allWords.containsKey(word)) {
+                    allWords.put(word, counts);
+                }
+                allWords.put(word, allWords.get(word) + counts);
+            }
         }
+        writer3.writeObject(allWords);
+        writer3.close();
     }
+
+
+    //save all crawled words into a file (no duplicates)
+    public void saveCrawledWords() throws IOException {
+        //read all words from the file(using function)
+        HashMap<String, Integer> allWords = FileInputAndOutput.readAllWords();
+        ObjectOutputStream writer4;
+        writer4 = new ObjectOutputStream(new FileOutputStream("crawled-words.dat"));
+        ArrayList<String> crawledWords = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : allWords.entrySet()){
+            String word = entry.getKey();
+            crawledWords.add(word);
+        }
+        writer4.writeObject(crawledWords);
+        writer4.close();
+    }
+
 
     //find the title of the current page
     public String findTitle(String html) {
