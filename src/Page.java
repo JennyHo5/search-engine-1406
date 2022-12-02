@@ -1,12 +1,12 @@
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Page {
+public class Page implements Serializable {
     private String URL;
     private String html;
     private String title;
-    private HashMap<String, Integer> allWords; //all words on the page
+    private HashMap<String, Integer> words; //all words on the page
     private HashSet<String> allURLs; //all URLs on the page
 
     //constructors
@@ -14,7 +14,7 @@ public class Page {
         URL = "";
         html = "";
         title = "";
-        allWords = new HashMap<>();
+        words = new HashMap<>();
         allURLs = new HashSet<>();
     }
 
@@ -22,15 +22,15 @@ public class Page {
         URL = iURL;
         html = "";
         title = "";
-        allWords = new HashMap<>();
+        words = new HashMap<>();
         allURLs = new HashSet<>();
     }
 
-    public Page(String iURL, String iTitle, HashMap<String, Integer> iAllWords,
+    public Page(String iURL, String iTitle, HashMap<String, Integer> iWords,
                 HashSet<String> iAllURLs) {
         URL = iURL;
         title = iTitle;
-        allWords = iAllWords;
+        words = iWords;
         allURLs = iAllURLs;
     }
 
@@ -49,7 +49,7 @@ public class Page {
 
 
     public HashMap<String, Integer> getAllWords() {
-        return allWords;
+        return words;
     }
 
     public HashSet<String> getAllURLs() {
@@ -69,16 +69,12 @@ public class Page {
         this.title = title;
     }
 
-    public void setAllWords(HashMap<String, Integer> allWords) {
-        this.allWords = allWords;
+    public void setAllWords(HashMap<String, Integer> words) {
+        this.words = words;
     }
 
     public void setAllURLs(HashSet<String> allURLs) {
         this.allURLs = allURLs;
     }
 
-    public String toString() {
-        String result = URL + html + title + allWords + allURLs;
-        return result;
-    }
 }
