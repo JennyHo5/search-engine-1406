@@ -58,14 +58,37 @@ public class ProjectTesterImp implements ProjectTester{
                 break;
             }
         }
-
         outgoingLinks = curPage.getAllURLs();
         return outgoingLinks;
     }
 
     @Override
     public List<String> getIncomingLinks(String url) {
-        return null;
+        List<String> incomingLinks = new ArrayList<>();
+        Page curPage = new Page(url);
+        HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLs();
+        //if the URL was not found during the crawling process then return Null
+        if (!crawledURLs.contains(url))
+            return null;
+        //read crawledPages
+        HashSet<Page> crawledPages = FileInputAndOutputKit.readCrawledPages();
+        //get curPage by URL
+        for (Page p : crawledPages) {
+            if (Objects.equals(p.getURL(), url)) {
+                curPage = p;
+                break;
+            }
+        }
+        //get through crawledPages again to find outgoing links
+        for (Page p : crawledPages) {
+            //if it is the same page, skip
+            if (Objects.equals(p.getURL(), url))
+                continue;
+            //if the links on the page include the current URL, store the page's URL
+            if (p.getAllURLs().contains(url))
+                incomingLinks.add(p.getURL());
+        }
+        return incomingLinks;
     }
 
     @Override
