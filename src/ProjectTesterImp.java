@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProjectTesterImp implements ProjectTester{
-    //Reset any existing data
+    /*
+    This method must delete any existing data that has been stored from any previous crawl.
+    This method should also perform any other initialization needed by your system.
+    This method will be always called before executing the crawl for a new dataset
+     */
     @Override
     public void initialize() {
 
@@ -93,6 +97,7 @@ public class ProjectTesterImp implements ProjectTester{
 
     @Override
     public double getPageRank(String url) {
+
         return 0;
     }
 

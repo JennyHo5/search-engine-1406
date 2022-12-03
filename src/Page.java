@@ -1,7 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class Page implements Serializable {
     private String URL;
@@ -9,6 +8,7 @@ public class Page implements Serializable {
     private String title;
     private HashMap<String, Integer> words; //all words on the page
     private ArrayList<String> allURLs; //all URLs on the page
+
 
     //constructors
     public Page(String iURL) {

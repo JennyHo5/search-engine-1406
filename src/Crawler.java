@@ -89,7 +89,6 @@ public class Crawler {
         writer3.close();
     }
 
-
     //save all crawled words into a file (no duplicates)
     public void saveCrawledWords() throws IOException {
         //read all words from the file(using function)
@@ -104,5 +103,7 @@ public class Crawler {
         writer4.writeObject(crawledWords);
         writer4.close();
     }
+
+    //save is-connect data into a files
 
 }
