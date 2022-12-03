@@ -50,4 +50,43 @@ public class FindElementsKit {
         return allURLs;
     }
 
+    public static List<String> getOutgoingLinks(String url) {
+        List<String> outgoingLinks = new ArrayList<>();
+        HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLs();
+        //if the URL was not found during the crawling process then return Null
+        if (!crawledURLs.contains(url))
+            return null;
+        //read crawledPages
+        HashSet<Page> crawledPages = FileInputAndOutputKit.readCrawledPages();
+        Page curPage = new Page(url);
+        for (Page p : crawledPages) {
+            if (Objects.equals(p.getURL(), url)) {
+                curPage = p;
+                break;
+            }
+        }
+        outgoingLinks = curPage.getAllURLs();
+        return outgoingLinks;
+    }
+
+    public static List<String> getIncomingLinks(String url) {
+        List<String> incomingLinks = new ArrayList<>();
+        HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLs();
+        //if the URL was not found during the crawling process then return Null
+        if (!crawledURLs.contains(url))
+            return null;
+        //read crawledPages
+        HashSet<Page> crawledPages = FileInputAndOutputKit.readCrawledPages();
+        //get through crawledPages again to find outgoing links
+        for (Page p : crawledPages) {
+            //if it is the same page, skip
+            if (Objects.equals(p.getURL(), url))
+                continue;
+            //if the links on the page include the current URL, store the page's URL
+            if (p.getAllURLs().contains(url))
+                incomingLinks.add(p.getURL());
+        }
+        return incomingLinks;
+    }
+
 }
