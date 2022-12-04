@@ -1,6 +1,6 @@
 Passed Test #12 checking incoming links for https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-7.html
 expected = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-4.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-8.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html]
-result = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-4.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-8.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html]
+result = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-8.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-4.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html]
 
 
 Passed Test #13 checking incoming links for https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-5.html
@@ -10,12 +10,12 @@ result = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html]
 
 Passed Test #14 checking incoming links for https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html
 expected = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-4.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html]
-result = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-4.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html]
+result = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-4.html]
 
 
 Passed Test #15 checking incoming links for https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-4.html
 expected = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-7.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html]
-result = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-7.html]
+result = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-7.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html]
 
 
 Passed Test #16 checking incoming links for https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-1.html
@@ -25,7 +25,7 @@ result = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html]
 
 Passed Test #17 checking incoming links for https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html
 expected = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-6.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-5.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-8.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-4.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-7.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-2.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-1.html]
-result = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-7.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-6.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-4.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-5.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-1.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-2.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-8.html]
+result = [https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-6.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-5.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-1.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-8.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-2.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-4.html, https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-7.html]
 
 
 Passed Test #18 checking incoming links for https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-6.html

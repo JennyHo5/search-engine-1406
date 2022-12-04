@@ -111,7 +111,6 @@ public class ProjectTesterImp implements ProjectTester{
 
     @Override
     public List<SearchResult> search(String query, boolean boost, int X) {
-        List<SearchResult> searchResult = new ArrayList<>();
         List<Page> result = new ArrayList<>();
         //turn the phrase user entered into a query
         ArrayList<String> queryList = Search.getSearchQuery(query);
@@ -148,7 +147,7 @@ public class ProjectTesterImp implements ProjectTester{
                 p.setScore(0);
             else {
                 double cosine = num / (leftDenom * rightDenom);
-                p.setScore(cosine);
+                p.setScore((double) Math.round(cosine * 1000d) / 1000d); //round the result to 3dp
             }
             result.add(p);
         }
@@ -158,12 +157,13 @@ public class ProjectTesterImp implements ProjectTester{
             for (Page p : result) {
                 double pagerank = p.getPagerank();
                 double score = p.getScore();
-                p.setScore(pagerank * score);
+                p.setScore((double)Math.round(pagerank * score * 1000d) / 1000d); //round the result to 3dp
             }
         }
 
+        List<Page> sortedResult = new ArrayList<>();
         //sort the result from the top to low and add the top X to searchResult
-        while (searchResult.size() < 10) {
+        while (sortedResult.size() < 10) {
             double highestScore = result.get(0).getScore();
             Page highestScorePage = result.get(0);
             for (Page p : result) {
@@ -172,9 +172,14 @@ public class ProjectTesterImp implements ProjectTester{
                     highestScorePage = p;
                 }
             }
-            searchResult.add(highestScorePage);
+            sortedResult.add(highestScorePage);
             result.remove(highestScorePage);
         }
+
+        //sort lexicographically
+        Collections.sort(sortedResult);
+
+        List<SearchResult> searchResult = new ArrayList<>(sortedResult);
 
         return searchResult;
     }

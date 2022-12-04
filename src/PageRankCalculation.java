@@ -9,30 +9,10 @@ public class PageRankCalculation {
     //if two URL are connected
     public static boolean isConnected(String url1, String url2) {
         //get url1's all outgoing links
-        List<String> url1OutgoingLinks = new ArrayList<>();
-        url1OutgoingLinks = FindElementsKit.getOutgoingLinks(url1);
+        List<String> url1OutgoingLinks = FindElementsKit.getOutgoingLinks(url1);
         //get url2's incoming links
-        List<String> url2IncomingLinks = new ArrayList<>();
-        url2IncomingLinks = FindElementsKit.getIncomingLinks(url2);
+        List<String> url2IncomingLinks = FindElementsKit.getIncomingLinks(url2);
         return url1OutgoingLinks.contains(url2) || url2IncomingLinks.contains(url1);
-    }
-
-    //return a HashMap including all the information of whether two URLs are connected
-    public static HashMap<String, HashMap<String, Boolean>> getURLsConnect() {
-        //create a HashMap
-        HashMap<String, HashMap<String, Boolean>> isConnect = new HashMap<>();
-        for (String url1 : crawledURLs) {
-            isConnect.put(url1, new HashMap<>());
-            for (String url2 : crawledURLs) {
-                if (Objects.equals(url2, url1))
-                    continue;
-                if (isConnected(url1, url2))
-                    isConnect.get(url1).put(url2, true);
-                else
-                    isConnect.get(url1).put(url2, false);
-            }
-        }
-        return isConnect;
     }
 
     //map each URL to a specific int, and create a HashMap to contain those ints and URLs
@@ -128,7 +108,6 @@ public class PageRankCalculation {
         //keep multiplying the matrix by a vector π (1, 0, 0, ...) until difference in π between iterations is below a threshold
             //create a vector
         double[][] v0 = new double[1][N];
-        double[][] v1 = new double[1][N];
 
         for (int i=0; i < N; i++) {
             v0[0][i] = (double)1/N;
@@ -138,7 +117,7 @@ public class PageRankCalculation {
             //keep multiplying the matrix by vector v0 until difference in π between iterations is below a threshold
         double e = 1;
         while (e > threshold) {
-            v1 = MatMultKit.multMatrix(v0, matrix);
+            double[][] v1 = MatMultKit.multMatrix(v0, matrix);
             e = MatMultKit.euclideanDist(v0, v1);
             v0 = v1;
         }

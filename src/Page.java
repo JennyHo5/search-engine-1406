@@ -1,8 +1,9 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
-public class Page implements Serializable, SearchResult {
+public class Page implements Serializable, SearchResult, Comparable<Page> {
     private String URL;
     private String html;
     private String title;
@@ -86,4 +87,8 @@ public class Page implements Serializable, SearchResult {
 
     public void setPagerank (double pagerank) {this.pagerank = pagerank; }
 
+    @Override
+    public int compareTo(Page o) {
+        return Comparator.comparing(Page :: getScore).reversed().thenComparing(Page :: getTitle).compare(this, o);
+    }
 }
