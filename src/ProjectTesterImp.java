@@ -42,6 +42,16 @@ public class ProjectTesterImp implements ProjectTester{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        try {
+            c.saveIDFs();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            c.saveTFs();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -73,17 +83,50 @@ public class ProjectTesterImp implements ProjectTester{
 
     @Override
     public double getIDF(String word) {
-        return 0;
+        ObjectInputStream reader;
+        try {
+            reader = new ObjectInputStream(new FileInputStream("word-idf.dat"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        HashMap<String, Double> wordIDF = null;
+        try {
+            wordIDF = (HashMap<String, Double>) reader.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        if (!wordIDF.containsKey(word))
+            return 0;
+        return wordIDF.get(word);
     }
 
     @Override
     public double getTF(String url, String word) {
-        return 0;
+        ObjectInputStream reader;
+        try {
+            reader = new ObjectInputStream(new FileInputStream("url-word-tf.dat"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        HashMap<String, HashMap<String, Double>> urlWordTF = new HashMap<>();
+        try {
+            urlWordTF = (HashMap<String, HashMap<String, Double>>) reader.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        if (!urlWordTF.containsKey(url))
+            return 0;
+        if (!urlWordTF.get(url).containsKey(word))
+            return 0;
+        return urlWordTF.get(url).get(word);
     }
 
     @Override
     public double getTFIDF(String url, String word) {
-        return 0;
+        double tf = getTF(url, word);
+        double idf = getIDF(word);
+        double tfidf = Math.log(1 + tf) / Math.log(2) * idf;
+        return tfidf;
     }
 
     @Override

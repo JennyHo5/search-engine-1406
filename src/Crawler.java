@@ -114,7 +114,20 @@ public class Crawler {
     }
 
     //save idfs for each crawled word into a file
-    public void saveIDFs() {
+    public void saveIDFs() throws IOException {
+        HashMap<String, Double> wordIDF = TfIdfCalculation.calculateIDFs();
+        ObjectOutputStream writer;
+        writer = new ObjectOutputStream((new FileOutputStream("word-idf.dat")));
+        writer.writeObject(wordIDF);
+        writer.close();
+    }
 
+    //save tfs for each url into a file
+    public void saveTFs() throws IOException {
+        HashMap<String, HashMap<String, Double>> urlWordTF = TfIdfCalculation.calculateTFs();
+        ObjectOutputStream writer;
+        writer = new ObjectOutputStream((new FileOutputStream("url-word-tf.dat")));
+        writer.writeObject(urlWordTF);
+        writer.close();
     }
 }
