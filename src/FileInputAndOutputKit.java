@@ -51,7 +51,6 @@ public class FileInputAndOutputKit {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(allWords);
         return allWords;
     }
 

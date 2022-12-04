@@ -104,6 +104,12 @@ public class Crawler {
         writer4.close();
     }
 
-    //save is-connect data into a files
-
+    //save all pageranks for each page(URL) into a file
+    public void savePageranks() throws IOException {
+        HashMap<String, Double> pageranks = PageRankCalculation.calculatePageranks();
+        ObjectOutputStream writer;
+        writer = new ObjectOutputStream(new FileOutputStream("pageranks.dat"));
+        writer.writeObject(pageranks);
+        writer.close();
+    }
 }

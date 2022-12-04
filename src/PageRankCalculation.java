@@ -55,8 +55,6 @@ public class PageRankCalculation {
         return null;
     }
 
-
-
     public static HashMap<String, Double> calculatePageranks() {
         double a = 0.1;
         double threshold = 0.0001;

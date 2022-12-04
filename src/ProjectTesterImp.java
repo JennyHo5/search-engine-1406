@@ -1,7 +1,5 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ProjectTesterImp implements ProjectTester{
     /*
@@ -39,9 +37,11 @@ public class ProjectTesterImp implements ProjectTester{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        FileInputAndOutputKit.readCrawledURLs();
-        FileInputAndOutputKit.readAllWords();
-        FileInputAndOutputKit.readCrawledWorlds();
+        try {
+            c.savePageranks();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -55,9 +55,20 @@ public class ProjectTesterImp implements ProjectTester{
     }
 
     @Override
-    public double getPageRank(String url) {
-
-        return 0;
+    public double getPageRank(String url){
+        ObjectInputStream reader;
+        try {
+            reader = new ObjectInputStream(new FileInputStream("pageranks.dat"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        HashMap<String, Double> pageranks = null;
+        try {
+            pageranks = (HashMap<String, Double>) reader.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return pageranks.get(url);
     }
 
     @Override
