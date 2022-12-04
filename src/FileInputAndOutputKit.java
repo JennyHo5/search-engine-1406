@@ -54,7 +54,7 @@ public class FileInputAndOutputKit {
         return allWords;
     }
 
-    public static ArrayList<String> readCrawledWorlds(){
+    public static ArrayList<String> readCrawledWords(){
         ObjectInputStream reader1;
         try {
             reader1 = new ObjectInputStream(new FileInputStream("crawled-words.dat"));

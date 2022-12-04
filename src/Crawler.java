@@ -112,4 +112,9 @@ public class Crawler {
         writer.writeObject(pageranks);
         writer.close();
     }
+
+    //save idfs for each crawled word into a file
+    public void saveIDFs() {
+
+    }
 }
