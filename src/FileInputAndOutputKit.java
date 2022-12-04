@@ -22,16 +22,16 @@ public class FileInputAndOutputKit {
         return crawledPages;
     }
 
-    public static HashSet<String> readCrawledURLs(){
+    public static ArrayList<String> readCrawledURLs(){
         ObjectInputStream reader1;
         try {
             reader1 = new ObjectInputStream(new FileInputStream("crawled-URLs.dat"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        HashSet<String> crawledURLs = new HashSet<>();
+        ArrayList<String> crawledURLs = new ArrayList<>();
         try {
-            crawledURLs = (HashSet<String>) reader1.readObject();
+            crawledURLs = (ArrayList<String>) reader1.readObject();
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

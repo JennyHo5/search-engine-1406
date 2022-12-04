@@ -43,7 +43,7 @@ public class FindElementsKit {
             int endQuotationIndex = a.indexOf("\">");
             String URL = a.substring(0, endQuotationIndex);
             String absURL = LinkConverter.convert(URL, seed);
-            //add the fullLink to the HashSet
+            //add the fullLink to the ArrayList
             allURLs.add(absURL);
             html = html.substring(0, startAIndex) + html.substring(endAIndex + 5);
         }
@@ -52,7 +52,7 @@ public class FindElementsKit {
 
     public static List<String> getOutgoingLinks(String url) {
         List<String> outgoingLinks = new ArrayList<>();
-        HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLs();
+        ArrayList<String> crawledURLs = FileInputAndOutputKit.readCrawledURLs();
         //if the URL was not found during the crawling process then return Null
         if (!crawledURLs.contains(url))
             return null;
@@ -71,7 +71,7 @@ public class FindElementsKit {
 
     public static List<String> getIncomingLinks(String url) {
         List<String> incomingLinks = new ArrayList<>();
-        HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLs();
+        ArrayList<String> crawledURLs = FileInputAndOutputKit.readCrawledURLs();
         //if the URL was not found during the crawling process then return Null
         if (!crawledURLs.contains(url))
             return null;

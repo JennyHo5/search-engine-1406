@@ -8,7 +8,7 @@ public class Crawler {
     Page seedPage;
     String seedURL;
     ArrayList<String> queueURLs;
-    HashSet<String> alreadyCrawledURLs;
+    ArrayList<String> alreadyCrawledURLs;
     HashSet<Page> crawledPages;
 
     //constructor
@@ -17,7 +17,7 @@ public class Crawler {
         seedPage = new Page(seedURL);
         queueURLs = new ArrayList<>();
         queueURLs.add(seedURL);
-        alreadyCrawledURLs = new HashSet<>();
+        alreadyCrawledURLs = new ArrayList<>();
         crawledPages = new HashSet<>();
     }
 
