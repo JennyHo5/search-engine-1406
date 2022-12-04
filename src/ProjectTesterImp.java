@@ -78,6 +78,8 @@ public class ProjectTesterImp implements ProjectTester{
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+        if (!pageranks.containsKey(url))
+            return -1.0;
         return pageranks.get(url);
     }
 
