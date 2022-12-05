@@ -2,12 +2,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Page implements Serializable {
+public class Page implements Serializable, SearchResult {
     private String URL;
     private String html;
     private String title;
     private HashMap<String, Integer> words; //all words on the page
     private ArrayList<String> allURLs; //all URLs on the page
+    private double score;
+    private double pagerank;
 
 
     //constructors
@@ -17,6 +19,8 @@ public class Page implements Serializable {
         title = "";
         words = new HashMap<>();
         allURLs = new ArrayList<>();
+        score = 0;
+        pagerank = 0;
     }
 
     public Page(String iURL, String iTitle, HashMap<String, Integer> iWords,
@@ -25,6 +29,8 @@ public class Page implements Serializable {
         title = iTitle;
         words = iWords;
         allURLs = iAllURLs;
+        score = 0;
+        pagerank = 0;
     }
 
     //get methods
@@ -49,6 +55,10 @@ public class Page implements Serializable {
         return allURLs;
     }
 
+    public double getScore() {return score;}
+
+    public Double getPagerank() {return pagerank;};
+
     //set methods
     public void setURL(String URL) {
         this.URL = URL;
@@ -69,5 +79,11 @@ public class Page implements Serializable {
     public void setAllURLs(ArrayList<String> allURLs) {
         this.allURLs = allURLs;
     }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public void setPagerank (double pagerank) {this.pagerank = pagerank; }
 
 }

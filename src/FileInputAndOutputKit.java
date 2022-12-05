@@ -67,8 +67,55 @@ public class FileInputAndOutputKit {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(crawledWords);
         return crawledWords;
+    }
+
+    public static HashMap<String, Double> readPageranks() {
+        ObjectInputStream reader;
+        try {
+            reader = new ObjectInputStream(new FileInputStream("pageranks.dat"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        HashMap<String, Double> pageranks = new HashMap<>();
+        try {
+            pageranks = (HashMap<String, Double>) reader.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return pageranks;
+    }
+
+    public static HashMap<String, Double> readWordIDF() {
+        ObjectInputStream reader;
+        try {
+            reader = new ObjectInputStream(new FileInputStream("word-idf.dat"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        HashMap<String, Double> wordIDF = null;
+        try {
+            wordIDF = (HashMap<String, Double>) reader.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return wordIDF;
+    }
+
+    public static HashMap<String, HashMap<String, Double>> readUrlWordTF(){
+        ObjectInputStream reader;
+        try {
+            reader = new ObjectInputStream(new FileInputStream("url-word-tf.dat"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        HashMap<String, HashMap<String, Double>> urlWordTF = new HashMap<>();
+        try {
+            urlWordTF = (HashMap<String, HashMap<String, Double>>) reader.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return urlWordTF;
     }
 
 }

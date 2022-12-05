@@ -85,18 +85,7 @@ public class ProjectTesterImp implements ProjectTester{
 
     @Override
     public double getIDF(String word) {
-        ObjectInputStream reader;
-        try {
-            reader = new ObjectInputStream(new FileInputStream("word-idf.dat"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        HashMap<String, Double> wordIDF = null;
-        try {
-            wordIDF = (HashMap<String, Double>) reader.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        HashMap<String, Double> wordIDF =  FileInputAndOutputKit.readWordIDF();
         if (!wordIDF.containsKey(word))
             return 0;
         return wordIDF.get(word);
@@ -104,18 +93,7 @@ public class ProjectTesterImp implements ProjectTester{
 
     @Override
     public double getTF(String url, String word) {
-        ObjectInputStream reader;
-        try {
-            reader = new ObjectInputStream(new FileInputStream("url-word-tf.dat"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        HashMap<String, HashMap<String, Double>> urlWordTF = new HashMap<>();
-        try {
-            urlWordTF = (HashMap<String, HashMap<String, Double>>) reader.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        HashMap<String, HashMap<String, Double>> urlWordTF = FileInputAndOutputKit.readUrlWordTF();
         if (!urlWordTF.containsKey(url))
             return 0;
         if (!urlWordTF.get(url).containsKey(word))
@@ -133,6 +111,71 @@ public class ProjectTesterImp implements ProjectTester{
 
     @Override
     public List<SearchResult> search(String query, boolean boost, int X) {
-        return null;
+        List<SearchResult> searchResult = new ArrayList<>();
+        List<Page> result = new ArrayList<>();
+        //turn the phrase user entered into a query
+        ArrayList<String> queryList = Search.getSearchQuery(query);
+        //get the query vector
+        ArrayList<Double> queVector = Search.getQueVector(query, queryList);
+
+        //measure the left-denom
+        double qSum = 0;
+        for (double i : queVector)
+            qSum += i*i;
+        double leftDenom = Math.sqrt(qSum);
+
+        //for each document(page), measure the similarity
+        HashSet<Page> crawledPages = FileInputAndOutputKit.readCrawledPages();
+        for (Page p : crawledPages) {
+            String url = p.getURL();
+            p.setPagerank(FileInputAndOutputKit.readPageranks().get(url));
+
+            //get the document vector for each document
+            ArrayList<Double> docVector = Search.getDocVector(url, queryList);
+            //measure the numerator
+            double num = 0;
+            for (int i = 0; i < queVector.size(); i++)
+                num += queVector.get(i) * docVector.get(i);
+            //measure the right_denom
+            double dSum = 0;
+            for (double i : docVector)
+                dSum += i*i;
+            double rightDenom = Math.sqrt(dSum);
+
+            //calculate the cosine of the page
+            //if none of terms in the query vector exist in the page (right_denom == 0), pagescore = 0;
+            if (rightDenom == 0)
+                p.setScore(0);
+            else {
+                double cosine = num / (leftDenom * rightDenom);
+                p.setScore(cosine);
+            }
+            result.add(p);
+        }
+
+        //if boost = True, boost by PageRank value
+        if (boost) {
+            for (Page p : result) {
+                double pagerank = p.getPagerank();
+                double score = p.getScore();
+                p.setScore(pagerank * score);
+            }
+        }
+
+        //sort the result from the top to low and add the top X to searchResult
+        while (searchResult.size() < 10) {
+            double highestScore = result.get(0).getScore();
+            Page highestScorePage = result.get(0);
+            for (Page p : result) {
+                if (p.getScore() > highestScore) {
+                    highestScore = p.getScore();
+                    highestScorePage = p;
+                }
+            }
+            searchResult.add(highestScorePage);
+            result.remove(highestScorePage);
+        }
+
+        return searchResult;
     }
 }
