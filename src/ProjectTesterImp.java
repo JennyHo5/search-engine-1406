@@ -1,5 +1,8 @@
 import java.io.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.*;
+import java.io.File;
 
 public class ProjectTesterImp implements ProjectTester{
     /*
@@ -9,7 +12,18 @@ public class ProjectTesterImp implements ProjectTester{
      */
     @Override
     public void initialize() {
-
+        Path cwd = Path.of(".").toAbsolutePath(); //get current working directory
+        //delete all the .dat files in the current directory
+        File dir = new File(cwd.toString());
+        File[] dirList = dir.listFiles();
+        if (dirList != null) {
+            for (File f : dirList) {
+                if (f.getName().endsWith("dat"))
+                    f.delete();
+                if (f.getName().endsWith("txt") && !f.getName().endsWith("results.txt"))
+                    f.delete();
+            }
+        }
     }
 
     //perform a web crawl starting at seed URL
