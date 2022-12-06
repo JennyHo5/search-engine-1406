@@ -57,6 +57,16 @@ public class ProjectTesterImp implements ProjectTester{
             throw new RuntimeException(e);
         }
         try {
+            c.saveMapIntWithUrl();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            c.saveConnect();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
             c.savePageranks();
         } catch (IOException e) {
             throw new RuntimeException(e);

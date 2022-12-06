@@ -1,59 +1,75 @@
+import java.io.*;
 import java.util.*;
 
 public class PageRankCalculation {
     //read crawled URLs
     static ArrayList<String> crawledURLsArray = FileInputAndOutputKit.readCrawledURLsArray();
     static Integer N = crawledURLsArray.size();
-    static HashMap<Integer, String> intWithURL = mapIntWithURL();
+    static HashMap<Integer, String> map = readIntURLMap();
 
-    //if two URL are connected
-    public static boolean isConnected(String url1, String url2) {
-        //get url1's all outgoing links
-        HashSet<String> url1OutgoingLinksHash = FindElementsKit.getOutgoingLinksHash(url1);
-        //get url2's incoming links
-        HashSet<String> url2IncomingLinksHash = FindElementsKit.getIncomingLinksHash(url2);
-        return url1OutgoingLinksHash.contains(url2) || url2IncomingLinksHash.contains(url1); //O(1)
+    static HashMap<String, HashMap<String, Boolean>> connect = readConnect();
+
+
+
+
+
+    public static HashMap<Integer, String> readIntURLMap() {
+        //read map-url from file
+        ObjectInputStream reader;
+        try {
+            reader = new ObjectInputStream(new FileInputStream("int-url.dat"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        HashMap<Integer, String> map = null;
+        try {
+            map = (HashMap<Integer, String>) reader.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return map;
     }
 
-    //map each URL to a specific int, and create a HashMap to contain those ints and URLs
-    public static HashMap<Integer, String> mapIntWithURL() {
-        HashMap<Integer, String> intWithURL = new HashMap<>();
-        for (int i = 0; i < N; i++) //O(n)
-            intWithURL.put(i, crawledURLsArray.get(i));
-        return intWithURL;
+    public static HashMap<String, HashMap<String, Boolean>> readConnect() {
+        ObjectInputStream reader;
+        try {
+            reader = new ObjectInputStream(new FileInputStream("connect.dat"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        HashMap<String, HashMap<String, Boolean>> connect = null;
+        try {
+            connect = (HashMap<String, HashMap<String, Boolean>>)reader.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return connect;
     }
+
 
     //turn integer into the original URL
-    public static String getURLFromInt(Integer i) {
-        HashMap<Integer, String> map = mapIntWithURL(); //O(n)
-        for (Map.Entry<Integer, String> entry : map.entrySet()) {
-            Integer key = entry.getKey();
-            String value = entry.getValue();
-            if (Objects.equals(key, i))
-                return value;
-        }
-        return null;
+    public static String getURLFromInt(Integer i){
+        if (map.containsKey(i)) //O(1)
+            return map.get(i);
+        else return null;
     }
 
-    public static HashMap<String, Double> calculatePageranks() {
+    public static HashMap<String, Double> calculatePageranks(){
         double a = 0.1;
         double threshold = 0.0001;
 
         //create an N*N matrix
             //N = number of pages(URLs) crawled
-        double[][] matrix = new double[N][N];
-        for (int i=0; i < N; i++)
-            for (int j=0; j < N; j++)
-                matrix[i][j] = 0; //O(n^2)
+        double[][] matrix = MatMultKit.identity(N);
 
         //for the number at [i, j], if node i links to node j, then [i, j] = 1; otherwise = 0
-        for (int i=0; i < N; i++) {
-            String iURL = getURLFromInt(i);
-            for (int j=0; j < N; j++) {
-                String jURL = getURLFromInt(j);
+        for (int i=0; i < N; i++) { //O(n)
+            String iURL = getURLFromInt(i); //O(1)
+            for (int j=0; j < N; j++) { //O(n)
+                String jURL = getURLFromInt(j); //O(1)
                 if (Objects.equals(iURL, jURL))
                     continue;
-                if (isConnected(iURL, jURL) || isConnected(jURL, iURL))
+                if (connect.get(iURL).get(jURL) || connect.get(jURL).get(iURL))
                     matrix[i][j] = 1;
             }
         }
@@ -105,7 +121,6 @@ public class PageRankCalculation {
                 matrix[i][j] += a/N;
 
 
-        //keep multiplying the matrix by a vector π (1, 0, 0, ...) until difference in π between iterations is below a threshold
             //create a vector
         double[][] v0 = new double[1][N];
 
@@ -113,11 +128,10 @@ public class PageRankCalculation {
             v0[0][i] = (double)1/N;
         }
 
-
             //keep multiplying the matrix by vector v0 until difference in π between iterations is below a threshold
         double e = 1;
         while (e > threshold) {
-            double[][] v1 = MatMultKit.multMatrix(v0, matrix);
+            double[][] v1 = MatMultKit.multiply(v0, matrix);
             e = MatMultKit.euclideanDist(v0, v1);
             v0 = v1;
         }
@@ -125,7 +139,7 @@ public class PageRankCalculation {
         //return pageranks for all pages
         HashMap<String, Double> pageranks = new HashMap<>();
         for (int i = 0; i < N; i++)
-            pageranks.put(intWithURL.get(i), v0[0][i]);
+            pageranks.put(getURLFromInt(i), v0[0][i]);
 
         return pageranks;
     }

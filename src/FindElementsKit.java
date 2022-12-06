@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class FindElementsKit {
+    HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLsHash();
     //find the title of the current page
     public static String findTitle(String html) {
         int startTitleTagIndex = html.indexOf("<title");

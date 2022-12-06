@@ -134,4 +134,52 @@ public class Crawler {
         writer.writeObject(urlWordTF);
         writer.close();
     }
+
+    //map each URL to a specific int, and create a HashMap to contain those ints and URLs
+    public void saveMapIntWithUrl() throws IOException {
+        HashMap<Integer, String> intWithURL = new HashMap<>();
+        ArrayList<String> crawledURLsArray = FileInputAndOutputKit.readCrawledURLsArray();
+        for (int i = 0; i < crawledURLsArray.size(); i++) //O(n)
+            intWithURL.put(i, crawledURLsArray.get(i));
+        //save it to a file
+        ObjectOutputStream writer;
+        writer = new ObjectOutputStream(new FileOutputStream("int-url.dat"));
+        writer.writeObject(intWithURL);
+        writer.close();
+    }
+
+    //if two URL are connected
+    public static boolean isConnected(String url1, String url2) {
+        //get url1's all outgoing links
+        HashSet<String> url1OutgoingLinksHash = FindElementsKit.getOutgoingLinksHash(url1);
+        //get url1's incoming links
+        HashSet<String> url1IncomingLinksHash = FindElementsKit.getIncomingLinksHash(url1);
+        return url1OutgoingLinksHash.contains(url2) || url1IncomingLinksHash.contains(url2); //O(1)
+    }
+
+    public static HashMap<String, HashMap<String, Boolean>> getUrl1Url2Connect() {
+        HashMap<String, HashMap<String, Boolean>> url1url2IfConnect = new HashMap<>();
+        ArrayList<String> crawledURLsArray = FileInputAndOutputKit.readCrawledURLsArray();
+        for (String url1 : crawledURLsArray) {
+            url1url2IfConnect.put(url1, new HashMap<>());
+            for (String url2 : crawledURLsArray) {
+                if (Objects.equals(url2, url1))
+                    continue;
+                if (isConnected(url1, url2))
+                    url1url2IfConnect.get(url1).put(url2, true);
+                else url1url2IfConnect.get(url1).put(url2, false);
+            }
+        }
+        return url1url2IfConnect;
+    }
+
+
+    public static void saveConnect() throws IOException {
+        HashMap<String, HashMap<String, Boolean>> connect = getUrl1Url2Connect();
+        //save it to a file
+        ObjectOutputStream writer;
+        writer = new ObjectOutputStream(new FileOutputStream("connect.dat"));
+        writer.writeObject(connect);
+        writer.close();
+    }
 }
