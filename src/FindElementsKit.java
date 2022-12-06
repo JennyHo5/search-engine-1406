@@ -34,8 +34,8 @@ public class FindElementsKit {
     }
 
     //find all links on the current page
-    public static ArrayList<String> findURLs(String html, String seed) {
-        ArrayList<String> allURLs = new ArrayList<>();
+    public static HashSet<String> findURLs(String html, String seed) {
+        HashSet<String> allURLs = new HashSet<>();
         while (html.contains("<a href=\"")) {
             int startAIndex = html.indexOf("<a href=\"");
             int endAIndex = html.indexOf("</a>");
@@ -51,8 +51,7 @@ public class FindElementsKit {
     }
 
     public static List<String> getOutgoingLinks(String url) {
-        List<String> outgoingLinks = new ArrayList<>();
-        ArrayList<String> crawledURLs = FileInputAndOutputKit.readCrawledURLs();
+        HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLsHash();
         //if the URL was not found during the crawling process then return Null
         if (!crawledURLs.contains(url))
             return null;
@@ -65,13 +64,52 @@ public class FindElementsKit {
                 break;
             }
         }
-        outgoingLinks = curPage.getAllURLs();
+        HashSet<String> outgoingLinksHash = curPage.getAllURLs();
+        List<String> outgoingLinks = new ArrayList<>(outgoingLinksHash);
         return outgoingLinks;
+    }
+
+    public static HashSet<String> getOutgoingLinksHash(String url) {
+        HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLsHash();
+        //if the URL was not found during the crawling process then return Null
+        if (!crawledURLs.contains(url))
+            return null;
+        //read crawledPages
+        HashSet<Page> crawledPages = FileInputAndOutputKit.readCrawledPages();
+        Page curPage = new Page(url);
+        for (Page p : crawledPages) {
+            if (Objects.equals(p.getURL(), url)) {
+                curPage = p;
+                break;
+            }
+        }
+        HashSet<String> outgoingLinksHash = curPage.getAllURLs();
+        return outgoingLinksHash;
     }
 
     public static List<String> getIncomingLinks(String url) {
         List<String> incomingLinks = new ArrayList<>();
-        ArrayList<String> crawledURLs = FileInputAndOutputKit.readCrawledURLs();
+        HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLsHash();
+        //if the URL was not found during the crawling process then return Null
+        if (!crawledURLs.contains(url))
+            return null;
+        //read crawledPages
+        HashSet<Page> crawledPages = FileInputAndOutputKit.readCrawledPages();
+        //get through crawledPages again to find outgoing links
+        for (Page p : crawledPages) {
+            //if it is the same page, skip
+            if (Objects.equals(p.getURL(), url))
+                continue;
+            //if the links on the page include the current URL, store the page's URL
+            if (p.getAllURLs().contains(url))
+                incomingLinks.add(p.getURL());
+        }
+        return incomingLinks;
+    }
+
+    public static HashSet<String> getIncomingLinksHash(String url) {
+        HashSet<String> incomingLinks = new HashSet<>();
+        HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLsHash();
         //if the URL was not found during the crawling process then return Null
         if (!crawledURLs.contains(url))
             return null;

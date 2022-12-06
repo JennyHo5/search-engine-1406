@@ -37,7 +37,12 @@ public class ProjectTesterImp implements ProjectTester{
             throw new RuntimeException(e);
         }
         try {
-            c.saveCrawledURLs();
+            c.saveCrawledURLsArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            c.saveCrawledURlsHash();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

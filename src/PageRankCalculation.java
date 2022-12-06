@@ -2,30 +2,30 @@ import java.util.*;
 
 public class PageRankCalculation {
     //read crawled URLs
-    static ArrayList<String> crawledURLs = FileInputAndOutputKit.readCrawledURLs();
-    static Integer N = crawledURLs.size();
+    static ArrayList<String> crawledURLsArray = FileInputAndOutputKit.readCrawledURLsArray();
+    static Integer N = crawledURLsArray.size();
     static HashMap<Integer, String> intWithURL = mapIntWithURL();
 
     //if two URL are connected
     public static boolean isConnected(String url1, String url2) {
         //get url1's all outgoing links
-        List<String> url1OutgoingLinks = FindElementsKit.getOutgoingLinks(url1);
+        HashSet<String> url1OutgoingLinksHash = FindElementsKit.getOutgoingLinksHash(url1);
         //get url2's incoming links
-        List<String> url2IncomingLinks = FindElementsKit.getIncomingLinks(url2);
-        return url1OutgoingLinks.contains(url2) || url2IncomingLinks.contains(url1);
+        HashSet<String> url2IncomingLinksHash = FindElementsKit.getIncomingLinksHash(url2);
+        return url1OutgoingLinksHash.contains(url2) || url2IncomingLinksHash.contains(url1); //O(1)
     }
 
     //map each URL to a specific int, and create a HashMap to contain those ints and URLs
     public static HashMap<Integer, String> mapIntWithURL() {
         HashMap<Integer, String> intWithURL = new HashMap<>();
-        for (int i = 0; i < N; i++)
-            intWithURL.put(i, crawledURLs.get(i));
+        for (int i = 0; i < N; i++) //O(n)
+            intWithURL.put(i, crawledURLsArray.get(i));
         return intWithURL;
     }
 
     //turn integer into the original URL
     public static String getURLFromInt(Integer i) {
-        HashMap<Integer, String> map = mapIntWithURL();
+        HashMap<Integer, String> map = mapIntWithURL(); //O(n)
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
             Integer key = entry.getKey();
             String value = entry.getValue();
@@ -44,7 +44,7 @@ public class PageRankCalculation {
         double[][] matrix = new double[N][N];
         for (int i=0; i < N; i++)
             for (int j=0; j < N; j++)
-                matrix[i][j] = 0;
+                matrix[i][j] = 0; //O(n^2)
 
         //for the number at [i, j], if node i links to node j, then [i, j] = 1; otherwise = 0
         for (int i=0; i < N; i++) {

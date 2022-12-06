@@ -1,23 +1,18 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 public class Crawler {
-    Page seedPage;
     String seedURL;
-    ArrayList<String> queueURLs;
-    ArrayList<String> alreadyCrawledURLs;
+    TreeSet<String> queueURLs;
+    HashSet<String> alreadyCrawledURLs;
     HashSet<Page> crawledPages;
 
     //constructor
     public Crawler(String iSeedURL) {
         seedURL = iSeedURL;
-        seedPage = new Page(seedURL);
-        queueURLs = new ArrayList<>();
+        queueURLs = new TreeSet<>();
         queueURLs.add(seedURL);
-        alreadyCrawledURLs = new ArrayList<>();
+        alreadyCrawledURLs = new HashSet<>();
         crawledPages = new HashSet<>();
     }
 
@@ -25,11 +20,11 @@ public class Crawler {
         // repeat until the queue is empty
         while (queueURLs.size() != 0) {
             //get and remove the next Page from queueList
-            String curURL = queueURLs.get(0);
-            queueURLs.remove(0);
+            String curURL = queueURLs.first(); //O(1)
+            queueURLs.pollFirst(); //O(1)
 
             //if the page has already been crawled, skip it
-            if (alreadyCrawledURLs.contains(curURL))
+            if (alreadyCrawledURLs.contains(curURL)) //O(1)
                 continue;
 
             //read the current page (using webdev module)
@@ -41,7 +36,7 @@ public class Crawler {
             }
             String curTitle = FindElementsKit.findTitle(curHtml);
             HashMap<String, Integer> curWords = FindElementsKit.findWords(curHtml);
-            ArrayList<String> curURLs = FindElementsKit.findURLs(curHtml, seedURL); //we saved the absolute url to urlURLs
+            HashSet<String> curURLs = FindElementsKit.findURLs(curHtml, seedURL); //we saved the absolute url to urlURLs
             Page curPage = new Page(curURL, curTitle, curWords, curURLs);
 
             //add those URls on current page to the queue
@@ -62,11 +57,20 @@ public class Crawler {
     }
 
     //save crawled URls
-    public void saveCrawledURLs() throws IOException {
+    public void saveCrawledURLsArray() throws IOException {
         ObjectOutputStream writer2;
-        writer2 = new ObjectOutputStream(new FileOutputStream("crawled-URLs.dat"));
-        writer2.writeObject(alreadyCrawledURLs);
+        writer2 = new ObjectOutputStream(new FileOutputStream("crawled-URLs-array.dat"));
+        List<String> crawledURLsArray = new ArrayList<>(alreadyCrawledURLs); //save the hashset into an arraylist
+        writer2.writeObject(crawledURLsArray);
         writer2.close();
+    }
+
+    public void saveCrawledURlsHash() throws IOException {
+        ObjectOutputStream writer;
+        writer = new ObjectOutputStream(new FileOutputStream("crawled-URLs-hash.dat"));
+        HashSet<String> crawledURlsHash = alreadyCrawledURLs;
+        writer.writeObject(crawledURlsHash);
+        writer.close();
     }
 
     //save all words in the crawled pages (including duplicates)

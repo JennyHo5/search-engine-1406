@@ -22,20 +22,36 @@ public class FileInputAndOutputKit {
         return crawledPages;
     }
 
-    public static ArrayList<String> readCrawledURLs(){
+    public static ArrayList<String> readCrawledURLsArray(){
         ObjectInputStream reader1;
         try {
-            reader1 = new ObjectInputStream(new FileInputStream("crawled-URLs.dat"));
+            reader1 = new ObjectInputStream(new FileInputStream("crawled-URLs-array.dat"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ArrayList<String> crawledURLs = new ArrayList<>();
+        ArrayList<String> crawledURLsArray = new ArrayList<>();
         try {
-            crawledURLs = (ArrayList<String>) reader1.readObject();
+            crawledURLsArray = (ArrayList<String>) reader1.readObject();
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        return crawledURLs;
+        return crawledURLsArray;
+    }
+
+    public static HashSet<String> readCrawledURLsHash(){
+        ObjectInputStream reader1;
+        try {
+            reader1 = new ObjectInputStream(new FileInputStream("crawled-URLs-hash.dat"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        HashSet<String> crawledURLsHash = new HashSet<>();
+        try {
+            crawledURLsHash = (HashSet<String>) reader1.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return crawledURLsHash;
     }
 
     public static HashMap<String, Integer> readAllWords(){
