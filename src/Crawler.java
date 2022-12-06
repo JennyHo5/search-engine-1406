@@ -149,11 +149,7 @@ public class Crawler {
     }
 
     //if two URL are connected
-    public static boolean isConnected(String url1, String url2) {
-        //get url1's all outgoing links
-        HashSet<String> url1OutgoingLinksHash = FindElementsKit.getOutgoingLinksHash(url1);
-        //get url1's incoming links
-        HashSet<String> url1IncomingLinksHash = FindElementsKit.getIncomingLinksHash(url1);
+    public static boolean isConnected(String url2, HashSet<String> url1OutgoingLinksHash, HashSet<String> url1IncomingLinksHash) {
         return url1OutgoingLinksHash.contains(url2) || url1IncomingLinksHash.contains(url2); //O(1)
     }
 
@@ -161,11 +157,13 @@ public class Crawler {
         HashMap<String, HashMap<String, Boolean>> url1url2IfConnect = new HashMap<>();
         ArrayList<String> crawledURLsArray = FileInputAndOutputKit.readCrawledURLsArray();
         for (String url1 : crawledURLsArray) {
+            HashSet<String> url1OutgoingLinksHash = FindElementsKit.getOutgoingLinksHash(url1);
+            HashSet<String> url2IncomingLinksHash = FindElementsKit.getIncomingLinksHash(url1);
             url1url2IfConnect.put(url1, new HashMap<>());
             for (String url2 : crawledURLsArray) {
                 if (Objects.equals(url2, url1))
                     continue;
-                if (isConnected(url1, url2))
+                if (isConnected(url2, url1OutgoingLinksHash, url2IncomingLinksHash))
                     url1url2IfConnect.get(url1).put(url2, true);
                 else url1url2IfConnect.get(url1).put(url2, false);
             }
@@ -174,7 +172,7 @@ public class Crawler {
     }
 
 
-    public static void saveConnect() throws IOException {
+    public void saveConnect() throws IOException {
         HashMap<String, HashMap<String, Boolean>> connect = getUrl1Url2Connect();
         //save it to a file
         ObjectOutputStream writer;
