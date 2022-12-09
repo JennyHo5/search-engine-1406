@@ -36,32 +36,6 @@ public class MatMultKit {
         return c;
     }
 
-    // matrix-vector multiplication (y = A * x)
-    public static double[] multiply(double[][] a, double[] x) {
-        int m = a.length;
-        int n = a[0].length;
-        if (x.length != n) throw new RuntimeException("Illegal matrix dimensions.");
-        double[] y = new double[m];
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
-                y[i] += a[i][j] * x[j];
-        return y;
-    }
-
-
-    // vector-matrix multiplication (y = x^T A)
-    public static double[] multiply(double[] x, double[][] a) {
-        int m = a.length;
-        int n = a[0].length;
-        if (x.length != m) throw new RuntimeException("Illegal matrix dimensions.");
-        double[] y = new double[n];
-        for (int j = 0; j < n; j++)
-            for (int i = 0; i < m; i++)
-                y[j] += a[i][j] * x[i];
-        return y;
-    }
-
-
 
     //This function accepts two single-row matrices (i.e., vectors) using the list representation for matrices used so far in this problem (e.g., a = [ [9, 3, 1] ]). Your function must calculate the Euclidean distance between these two vectors.
     public static double euclideanDist (double[][] a, double[][] b) {

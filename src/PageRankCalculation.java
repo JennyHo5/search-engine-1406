@@ -3,11 +3,11 @@ import java.util.*;
 
 public class PageRankCalculation {
     //read crawled URLs
-    static ArrayList<String> crawledURLsArray = FileInputAndOutputKit.readCrawledURLsArray();
-    static Integer N = crawledURLsArray.size();
-    static HashMap<Integer, String> map = readIntURLMap();
+    private static ArrayList<String> crawledURLsArray = FileInputAndOutputKit.readCrawledURLsArray();
+    private static Integer N = crawledURLsArray.size();
+    private static HashMap<Integer, String> map = readIntURLMap();
 
-    static HashMap<String, HashMap<String, Boolean>> connect = readConnect();
+    private static HashMap<String, HashMap<String, Boolean>> connect = readConnect();
 
 
 

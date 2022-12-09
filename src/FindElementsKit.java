@@ -42,12 +42,21 @@ public class FindElementsKit {
             String a = html.substring(startAIndex + 9, endAIndex);
             int endQuotationIndex = a.indexOf("\">");
             String URL = a.substring(0, endQuotationIndex);
-            String absURL = LinkConverter.convert(URL, seed);
+            String absURL = convert(URL, seed);
             //add the fullLink to the ArrayList
             allURLs.add(absURL);
             html = html.substring(0, startAIndex) + html.substring(endAIndex + 5);
         }
         return allURLs;
+    }
+
+    public static String convert(String orgURL, String seed) {
+        if (orgURL.startsWith("http://"))
+            return orgURL;
+        int startRelIndex = seed.lastIndexOf("/");
+        String root = seed.substring(0, startRelIndex);
+        String absURL = root + orgURL.substring(1);
+        return absURL;
     }
 
 

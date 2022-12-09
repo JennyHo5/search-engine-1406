@@ -58,7 +58,7 @@ public class Page implements Serializable, SearchResult, Comparable<Page> {
 
     public double getScore() {return score;}
 
-    public Double getPagerank() {return pagerank;};
+    public double getPagerank() {return pagerank;};
 
     //set methods
     public void setHtml(String html) {
