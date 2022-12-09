@@ -144,7 +144,7 @@ public class ProjectTesterImp implements ProjectTester{
     }
 
     @Override
-    public double getIDF(String word) {
+    public double getIDF(String word)  {
         HashMap<String, Double> wordIDF =  FileInputAndOutputKit.readWordIDF();
         if (!wordIDF.containsKey(word))
             return 0;

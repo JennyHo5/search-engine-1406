@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class Search {
-    static HashMap<String, Double> wordIDF =  FileInputAndOutputKit.readWordIDF();
-    static HashMap<String, HashMap<String, Double>> urlWordTF = FileInputAndOutputKit.readUrlWordTF();
+    private static HashMap<String, Double> wordIDF =  FileInputAndOutputKit.readWordIDF();
+    private static HashMap<String, HashMap<String, Double>> urlWordTF = FileInputAndOutputKit.readUrlWordTF();
 
     //turn the phrase (string) into a query
     //number of unique words -> number of entries (tfidf) to the words
