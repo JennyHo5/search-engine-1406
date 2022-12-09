@@ -4,14 +4,14 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class TfIdfCalculation {
-    static HashSet<Page> crawledPages =  FileInputAndOutputKit.readCrawledPages();
-    static ArrayList<String> crawledWords = FileInputAndOutputKit.readCrawledWords();
+    private static HashSet<Page> crawledPages =  FileInputAndOutputKit.readCrawledPages();
+    private static ArrayList<String> crawledWords = FileInputAndOutputKit.readCrawledWords();
 
     //calculate idfs for all words
     //accepts a single string argument representing a word and returns the inverse document frequency of that word
     // within the crawled pages
 
-    public static HashMap<String, Double> calculateIDFs () {
+    public static HashMap<String, Double> calculateIDFs() {
         HashMap<String, Double> wordIDF = new HashMap<>();
         //number of documents w appears in
         for (String w : crawledWords) {

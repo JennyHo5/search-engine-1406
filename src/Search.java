@@ -12,8 +12,8 @@ public class Search {
         ArrayList<String> searchQuery = new ArrayList<>();
         String[] queryList = query.split(" ");
         HashSet<String> querySet = new HashSet<>(List.of(queryList)); //a set without duplication words
-        for (String word : querySet) {
-            if (wordIDF.containsKey(word))
+        for (String word : querySet) { //O(n), n = # words in query
+            if (wordIDF.containsKey(word)) //O(1)
                 searchQuery.add(word);
         }
         return  searchQuery;
@@ -21,9 +21,9 @@ public class Search {
 
     public static ArrayList<Double> getDocVector(String url, ArrayList<String> query) {
         ArrayList<Double> docVector = new ArrayList<>();
-        for (String word : query) {
+        for (String word : query) { //O(n), n = # words in query
             double tf;
-            if (!urlWordTF.containsKey(url))
+            if (!urlWordTF.containsKey(url)) //O(1)
                 tf = 0;
             else if (!urlWordTF.get(url).containsKey(word)) {
                 tf = 0;

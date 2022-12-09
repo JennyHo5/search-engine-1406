@@ -1,5 +1,4 @@
 import java.io.*;
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.*;
 import java.io.File;
@@ -87,7 +86,7 @@ public class ProjectTesterImp implements ProjectTester{
     public List<String> getOutgoingLinks(String url) {
         HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLsHash();
         //if the URL was not found during the crawling process then return Null
-        if (!crawledURLs.contains(url))
+        if (!crawledURLs.contains(url)) //O(1)
             return null;
         //read crawledPages
         HashSet<Page> crawledPages = FileInputAndOutputKit.readCrawledPages();
@@ -179,7 +178,7 @@ public class ProjectTesterImp implements ProjectTester{
 
         //measure the left-denom
         double qSum = 0;
-        for (double i : queVector)
+        for (double i : queVector) //O(n), n = # words in query
             qSum += i*i;
         double leftDenom = Math.sqrt(qSum);
 
