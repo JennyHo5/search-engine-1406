@@ -2,10 +2,10 @@ import java.io.*;
 import java.util.*;
 
 public class Crawler {
-    String seedURL;
-    TreeSet<String> queueURLs;
-    HashSet<String> alreadyCrawledURLs;
-    HashSet<Page> crawledPages;
+    private String seedURL;
+    private TreeSet<String> queueURLs;
+    private HashSet<String> alreadyCrawledURLs;
+    private HashSet<Page> crawledPages;
 
     //constructor
     public Crawler(String iSeedURL) {

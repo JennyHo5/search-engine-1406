@@ -1,7 +1,6 @@
 import java.util.*;
 
 public class FindElementsKit {
-    HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLsHash();
     //find the title of the current page
     public static String findTitle(String html) {
         int startTitleTagIndex = html.indexOf("<title");
@@ -51,24 +50,6 @@ public class FindElementsKit {
         return allURLs;
     }
 
-    public static List<String> getOutgoingLinks(String url) {
-        HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLsHash();
-        //if the URL was not found during the crawling process then return Null
-        if (!crawledURLs.contains(url))
-            return null;
-        //read crawledPages
-        HashSet<Page> crawledPages = FileInputAndOutputKit.readCrawledPages();
-        Page curPage = new Page(url);
-        for (Page p : crawledPages) {
-            if (Objects.equals(p.getURL(), url)) {
-                curPage = p;
-                break;
-            }
-        }
-        HashSet<String> outgoingLinksHash = curPage.getAllURLs();
-        List<String> outgoingLinks = new ArrayList<>(outgoingLinksHash);
-        return outgoingLinks;
-    }
 
     public static HashSet<String> getOutgoingLinksHash(String url) {
         HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLsHash();
@@ -86,26 +67,6 @@ public class FindElementsKit {
         }
         HashSet<String> outgoingLinksHash = curPage.getAllURLs();
         return outgoingLinksHash;
-    }
-
-    public static List<String> getIncomingLinks(String url) {
-        List<String> incomingLinks = new ArrayList<>();
-        HashSet<String> crawledURLs = FileInputAndOutputKit.readCrawledURLsHash();
-        //if the URL was not found during the crawling process then return Null
-        if (!crawledURLs.contains(url))
-            return null;
-        //read crawledPages
-        HashSet<Page> crawledPages = FileInputAndOutputKit.readCrawledPages();
-        //get through crawledPages again to find outgoing links
-        for (Page p : crawledPages) {
-            //if it is the same page, skip
-            if (Objects.equals(p.getURL(), url))
-                continue;
-            //if the links on the page include the current URL, store the page's URL
-            if (p.getAllURLs().contains(url))
-                incomingLinks.add(p.getURL());
-        }
-        return incomingLinks;
     }
 
     public static HashSet<String> getIncomingLinksHash(String url) {
