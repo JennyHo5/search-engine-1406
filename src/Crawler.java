@@ -18,7 +18,7 @@ public class Crawler {
 
     public void doTheCrawl(){
         // repeat until the queue is empty
-        while (queueURLs.size() != 0) {
+        while (queueURLs.size() != 0) { //O(n), n = crawled pages
             //get and remove the next Page from queueList
             String curURL = queueURLs.first(); //O(1)
             queueURLs.pollFirst(); //O(1)
@@ -34,9 +34,9 @@ public class Crawler {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            String curTitle = FindElementsKit.findTitle(curHtml);
-            HashMap<String, Integer> curWords = FindElementsKit.findWords(curHtml);
-            HashSet<String> curURLs = FindElementsKit.findURLs(curHtml, seedURL); //we saved the absolute url to urlURLs
+            String curTitle = FindElementsKit.findTitle(curHtml); //O(m), m = # length of HTML
+            HashMap<String, Integer> curWords = FindElementsKit.findWords(curHtml); //O(m), m = # length of HTML
+            HashSet<String> curURLs = FindElementsKit.findURLs(curHtml, seedURL); //O(m), m = # length of HTML
             Page curPage = new Page(curURL, curTitle, curWords, curURLs);
 
             //add those URls on current page to the queue
