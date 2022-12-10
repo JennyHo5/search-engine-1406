@@ -22,8 +22,8 @@ public class SearchEngineView extends Pane {
     public SearchEngineView() {
         //create a Label
         title = new Label("Hoogle");
-        title.relocate(220, 26);
-        title.setFont(new Font("Comic Sans MS", 60));
+        title.relocate(220, 30);
+        title.setFont(new Font("Rockwell", 60));
 
         //create a radio button
         isBoost = new RadioButton("use PageRank boost");

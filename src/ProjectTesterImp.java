@@ -222,7 +222,7 @@ public class ProjectTesterImp implements ProjectTester{
 
         List<Page> sortedResult = new ArrayList<>();
         //sort the result from the top to low and add the top X to searchResult
-        while (sortedResult.size() < 10) {
+        while (sortedResult.size() < X) {
             double highestScore = result.get(0).getScore();
             Page highestScorePage = result.get(0);
             for (Page p : result) {
