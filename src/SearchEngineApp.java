@@ -5,11 +5,13 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 public class SearchEngineApp extends Application {
-    ProjectTester tester;
+    ProjectTesterImp model;
 
     public SearchEngineApp() {
-        tester = new ProjectTesterImp();
+        model = new ProjectTesterImp();
     }
 
 
@@ -26,14 +28,9 @@ public class SearchEngineApp extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 String searchQuery = view.getTextField().getText();
-                boolean boost;
-                if (view.getRadioButton().isSelected()) { //if is boosted
-                    boost = true;
-                } else {
-                    boost = false;
-                }
-                tester.search(searchQuery, boost, 10);
-                view.update(tester);
+                boolean boost = view.getRadioButton().isSelected();
+                List<SearchResult> result = model.search(searchQuery, boost, 10);
+                view.update(result);
             }
         });
 

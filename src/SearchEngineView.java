@@ -4,16 +4,17 @@ import javafx.scene.layout.Pane;
 import javafx.collections.FXCollections;
 import javafx.scene.text.Font;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchEngineView extends Pane {
-    private ListView<SearchResult> resultList;
+    private ListView<String> resultList;
     private TextField searchField;
     private Button searchButton;
     private Label title;
     private RadioButton isBoost;
 
-    public ListView<SearchResult> getResultList() { return resultList; }
+    public ListView<String> getResultList() { return resultList; }
     public TextField getTextField() { return searchField; }
     public Button getButton() { return searchButton; }
     public RadioButton getRadioButton() { return isBoost;}
@@ -30,7 +31,7 @@ public class SearchEngineView extends Pane {
         isBoost.setPrefSize(166, 38);
 
         // Create the lists
-        resultList = new ListView<SearchResult>();
+        resultList = new ListView<String>();
         resultList.relocate(110, 199);
         resultList.setPrefSize(420,240);
 
@@ -50,10 +51,16 @@ public class SearchEngineView extends Pane {
         setPrefSize(640, 480);
     }
 
-    public void update(ProjectTester model) {
-        ObservableList<SearchResult> result = FXCollections.observableArrayList(model.search(searchField.getText(),
-                isBoost.isSelected(), 10));
-        resultList.setItems(result);
+    public void update(List<SearchResult> result) {
+        List<String> resultToString = new ArrayList<>();
+        for (SearchResult sr : result) {
+            String title = sr.getTitle();
+            double score = sr.getScore();
+            String r = title + ", " + score;
+            resultToString.add(r);
+        }
+        ObservableList<String> displayResult = FXCollections.observableArrayList(resultToString);
+        resultList.setItems(displayResult);
     }
 
 }
