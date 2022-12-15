@@ -1,6 +1,4 @@
-# search-engine-1406
-
-Instructions for Running the Program and GUI
+# Instructions for Running the Program and GUI
 
 1. Go to CrawlerStart.java and change the URL in the 6th line to the seed URL you want to start at.
 For example:
